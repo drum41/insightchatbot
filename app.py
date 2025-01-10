@@ -23,7 +23,7 @@ from functions import (
     generate_label_details,
     # Add other FunctionDeclarations here
 )
-from functions import format_social_listening_data as format_social_listening_data_
+from functions import format_social_listening_data
 # Define Tools and Handlers based on interaction_found
 from functions.functiondeclarations import (
     brand_health_overview,
@@ -48,22 +48,27 @@ st.set_page_config(page_title="Insight Chatbot", page_icon="💬")
 base_dir = os.path.dirname(__file__)
 
 default_file = os.path.join(base_dir, "Central Retail and Competitors.xlsx")
-@st.cache_data
 def loaddata(df_path):
     df = pd.read_excel(df_path, sheet_name="Data")
     df['PublishedDate'] = pd.to_datetime(df['PublishedDate']).dt.date
     return df
-@st.cache_data
-def format_social_listening_data():
-    return format_social_listening_data_()
-# File uploader
+
 uploaded_file = st.sidebar.file_uploader("Upload your Excel file", type=["xlsx"])
 with st.sidebar:
-    st.markdown("The data must be in the sheet named 'Data,' containing all interaction columns. It is recommended to include the 'Labels1' column.")
-    st.markdown("Works best with questions in English.")
-    st.markdown("Please provide concise questions.")
-    st.markdown("For more in-depth questions, responses may take up to 2 minutes.")            
+    st.markdown("### Instructions")  # Use a header to group content
+    st.markdown("""
+    1. **Data Requirements**:
+       - The data must be in the sheet named **'Data'**, containing all interaction columns.
+       - It is recommended to include the **'Labels1'** column.
     
+    2. **Language**:
+       - Works best with questions written in **English**.
+    
+    3. **Question Guidelines**:
+       - Please provide **concise** questions for faster responses.
+       - For **in-depth** questions, responses may take up to **2 minutes**.
+    """)           
+        
 # Try to read the file
 try:
     if uploaded_file:
