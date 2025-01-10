@@ -1,0 +1,7 @@
+pandas
+streamlit
+google-cloud-aiplatform
+google.generativeai
+vertexai
+streamlit
+openpyxl
