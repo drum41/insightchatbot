@@ -15,7 +15,6 @@ from vertexai.generative_models import (
 from typing import Any
 # Import all FunctionDeclarations
 from functions import (
-    format_social_listening_data,
     get_daily_detail_data,
     generate_brand_health_overview,
     generate_top_post_details,
@@ -24,7 +23,7 @@ from functions import (
     generate_label_details,
     # Add other FunctionDeclarations here
 )
-
+from functions import format_social_listening_data as format_social_listening_data_
 # Define Tools and Handlers based on interaction_found
 from functions.functiondeclarations import (
     brand_health_overview,
@@ -49,30 +48,44 @@ st.set_page_config(page_title="Insight Chatbot", page_icon="💬")
 base_dir = os.path.dirname(__file__)
 
 default_file = os.path.join(base_dir, "Central Retail and Competitors.xlsx")
-
+@st.cache_data
+def loaddata(df_path):
+    df = pd.read_excel(df_path, sheet_name="Data")
+    df['PublishedDate'] = pd.to_datetime(df['PublishedDate']).dt.date
+    return df
+@st.cache_data
+def format_social_listening_data():
+    return format_social_listening_data_()
 # File uploader
 uploaded_file = st.sidebar.file_uploader("Upload your Excel file", type=["xlsx"])
-
+with st.sidebar:
+    st.markdown("The data must be in the sheet named 'Data,' containing all interaction columns. It is recommended to include the 'Labels1' column.")
+    st.markdown("Works best with questions in English.")
+    st.markdown("Please provide concise questions.")
+    st.markdown("For more in-depth questions, responses may take up to 2 minutes.")            
+    
 # Try to read the file
 try:
     if uploaded_file:
         # If the user uploaded a file, read it
-        df = pd.read_excel(uploaded_file, sheet_name="Data")
+        df = loaddata(uploaded_file) 
         file_name = uploaded_file.name  # Get the name of the uploaded file
         st.success(f"Your file '{file_name}' has been uploaded successfully!")
     else:
         # Use the default file if no file is uploaded
-        df = pd.read_excel(default_file, sheet_name="Data")
+        df = loaddata(default_file)
         file_name = os.path.basename(default_file)  # Get the name of the default file
         st.info(f"Using the default file: '{file_name}'.")
 
     # Format the data
     df, interaction_found, labels1_found = format_social_listening_data(df)
 
+
 except Exception as e:
     logger.error(f"Error reading Excel file: {e}")
     st.error("Failed to read the Excel file. Please check the file and try again.")
     st.stop()
+@st.cache_data
 def send_chat_message(prompt):
     prompt += """
     You are a social listening insight, give me the insight which is from information that you learn from the function responses
