@@ -44,7 +44,7 @@ logger = logging.getLogger(__name__)
 # ============================
 # Initialize Data and Tools
 # ============================
-st.set_page_config(page_title="Social Listening Chatbot", page_icon="💬")
+st.set_page_config(page_title="Insight Chatbot", page_icon="💬")
 
 base_dir = os.path.dirname(__file__)
 
@@ -238,15 +238,22 @@ else:
 # ============================
 
 PROJECT_ID = "hybrid-autonomy-445719-q2"
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = base_dir + "\\tts.json"
+import tempfile
+import json
 
-# google_credentials = st.secrets["google"]["credentials"]
+# Example: Retrieve credentials from Streamlit secrets
+credentials_str = st.secrets["google"]["credentials"]
+credentials_dict = json.loads(credentials_str)
 
-# # Write the credentials to a temporary file
-# with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".json") as tmp_file:
-#     tmp_file.write(google_credentials)
-#     credentials_path = tmp_file.name
-# os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_path
+# Create a temporary file
+with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".json") as temp_file:
+    json.dump(credentials_dict, temp_file)  # Write JSON to the file
+    temp_file_name = temp_file.name
+
+
+# Set the environment variable to the file path
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = temp_file_name
+
 # Initialize Vertex AI
 try:
     import vertexai
@@ -285,7 +292,7 @@ if "chat_session" not in st.session_state:
 st.title("💬 Social Listening Insights Chatbot")
 
 st.markdown("""
-Welcome to the **Social Listening Insights Chatbot**! Ask me about your brand's social media performance, sentiment analysis, top posts, and more.
+Welcome to the **Social Listening Insights Chatbot**! Ask me about your brand's social media performance, channel / sentiment analysis, and more.
 """)
 
 
