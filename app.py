@@ -48,7 +48,7 @@ st.set_page_config(page_title="Insight Chatbot", page_icon="💬")
 
 base_dir = os.path.dirname(__file__)
 
-default_file = os.path.join(base_dir, "corp.xlsx")
+default_file = os.path.join(base_dir, "Central Retail and Competitors.xlsx")
 
 # File uploader
 uploaded_file = st.sidebar.file_uploader("Upload your Excel file", type=["xlsx"])
