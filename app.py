@@ -66,7 +66,7 @@ with st.sidebar:
     )
     
     # File uploader for custom Excel files
-    uploaded_file = st.file_uploader("Upload your Excel file", type=["xlsx"])
+    uploaded_file = st.file_uploader("Or upload your own Excel file", type=["xlsx"])
     
     st.markdown("### Instructions")  # Use a header to group content
     st.markdown("""
