@@ -45,15 +45,18 @@ logger = logging.getLogger(__name__)
 # ============================
 st.set_page_config(page_title="Insight Chatbot", page_icon="💬")
 
+# Define the base directory and default file paths
 base_dir = os.path.dirname(__file__)
+default_file_1 = os.path.join(base_dir, "Central Retail and Competitors.xlsx")
+default_file_2 = os.path.join(base_dir, "PNJ Campaign.xlsx")
 
-default_file = os.path.join(base_dir, "Central Retail and Competitors.xlsx")
+# Function to load data from an Excel file
 def loaddata(df_path):
     df = pd.read_excel(df_path, sheet_name="Data")
     df['PublishedDate'] = pd.to_datetime(df['PublishedDate']).dt.date
     return df
 
-uploaded_file = st.sidebar.file_uploader("Upload your Excel file", type=["xlsx"])
+# Sidebar for file upload and instructions
 with st.sidebar:
     st.markdown("### Instructions")  # Use a header to group content
     st.markdown("""
@@ -67,8 +70,22 @@ with st.sidebar:
     3. **Question Guidelines**:
        - Please provide **concise** questions for faster responses.
        - For **in-depth** questions, responses may take up to **2 minutes**.
-    """)           
-        
+    """)
+
+    # Dropdown to select a default file
+    default_file_option = st.selectbox(
+        "Select a default file:",
+        options=["Central Retail.xlsx", "Competitors.xlsx"]
+    )
+    
+    # File uploader for custom Excel files
+    uploaded_file = st.file_uploader("Upload your Excel file", type=["xlsx"])
+
+# Determine which default file to use based on user selection
+selected_default_file = (
+    default_file_1 if default_file_option == "Central Retail.xlsx" else default_file_2
+)
+
 # Try to read the file
 try:
     if uploaded_file:
@@ -77,20 +94,19 @@ try:
         file_name = uploaded_file.name  # Get the name of the uploaded file
         st.success(f"Your file '{file_name}' has been uploaded successfully!")
     else:
-        # Use the default file if no file is uploaded
-        df = loaddata(default_file)
-        file_name = os.path.basename(default_file)  # Get the name of the default file
+        # Use the selected default file if no file is uploaded
+        df = loaddata(selected_default_file)
+        file_name = os.path.basename(selected_default_file)  # Get the name of the selected file
         st.info(f"Using the default file: '{file_name}'.")
 
     # Format the data
     df, interaction_found, labels1_found = format_social_listening_data(df)
 
-
 except Exception as e:
-    logger.error(f"Error reading Excel file: {e}")
-    st.error("Failed to read the Excel file. Please check the file and try again.")
+    st.error(f"Failed to read the Excel file. Please check the file and try again.")
     st.stop()
-@st.cache_data
+    
+# @st.cache_data
 # def send_chat_message(prompt):
 #     prompt += """
 #     You are a social listening insight, give me the insight which is from information that you learn from the function responses
