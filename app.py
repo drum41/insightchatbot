@@ -67,6 +67,7 @@ with st.sidebar:
     
     # File uploader for custom Excel files
     uploaded_file = st.file_uploader("Upload your Excel file", type=["xlsx"])
+    
     st.markdown("### Instructions")  # Use a header to group content
     st.markdown("""
     1. **Data Requirements**:
@@ -82,7 +83,7 @@ with st.sidebar:
     """)
 # Determine which default file to use based on user selection
 selected_default_file = (
-    default_file_1 if default_file_option == "PNJ Campaign.xlsx" else default_file_2
+    default_file_1 if default_file_option == "Central Retail and Competitors.xlsx" else default_file_2
 )
 
 # Try to read the file
