@@ -58,7 +58,7 @@ with st.sidebar:
     st.markdown("### Instructions")  # Use a header to group content
     st.markdown("""
     1. **Data Requirements**:
-       - The data must be in the sheet named **'Data'**, containing all interaction columns.
+       - The data must be in the sheet named **'Data'**, containing all basic columns of CMS excel file exported and interaction columns.
        - It is recommended to include the **'Labels1'** column.
     
     2. **Language**:
