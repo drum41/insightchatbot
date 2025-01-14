@@ -59,7 +59,6 @@ def loaddata(df_path):
 # Sidebar for file upload and instructions
 with st.sidebar:
 
-
     # Dropdown to select a default file
     default_file_option = st.selectbox(
         "Select a sample file:",
@@ -68,7 +67,19 @@ with st.sidebar:
     
     # File uploader for custom Excel files
     uploaded_file = st.file_uploader("Upload your Excel file", type=["xlsx"])
-
+    st.markdown("### Instructions")  # Use a header to group content
+    st.markdown("""
+    1. **Data Requirements**:
+       - The data must be in the sheet named **'Data'**, containing all basic columns of CMS excel file exported and interaction columns.
+       - It is recommended to include the **'Labels1'** column.
+    
+    2. **Language**:
+       - Works best with questions written in **English**.
+    
+    3. **Question Guidelines**:
+       - Please provide **concise** questions for faster responses.
+       - For **in-depth** questions, responses may take up to **2 minutes**.
+    """)
 # Determine which default file to use based on user selection
 selected_default_file = (
     default_file_1 if default_file_option == "PNJ Campaign.xlsx" else default_file_2
@@ -89,23 +100,11 @@ try:
 
     # Format the data
     df, interaction_found, labels1_found = format_social_listening_data(df)
-    st.markdown("### Instructions")  # Use a header to group content
-    st.markdown("""
-    1. **Data Requirements**:
-       - The data must be in the sheet named **'Data'**, containing all basic columns of CMS excel file exported and interaction columns.
-       - It is recommended to include the **'Labels1'** column.
-    
-    2. **Language**:
-       - Works best with questions written in **English**.
-    
-    3. **Question Guidelines**:
-       - Please provide **concise** questions for faster responses.
-       - For **in-depth** questions, responses may take up to **2 minutes**.
-    """)
 
 except Exception as e:
     st.error(f"Failed to read the Excel file. Please check the file and try again.")
     st.stop()
+
     
 # @st.cache_data
 # def send_chat_message(prompt):
