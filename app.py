@@ -86,10 +86,17 @@ selected_default_file = (
     default_file_1 if default_file_option == "Central Retail and Competitors.xlsx" else default_file_2
 )
 # Demo video
+# with st.expander("Watch the demo video"):
+#     st.write("Demo video")
+#     video_file = open("Demo chatbot.mp4", "rb")
+#     video_bytes = video_file.read()
+#     st.video(video_bytes)
+
 with st.expander("Watch the demo video"):
-    video_file = open("Demo chatbot.mp4", "rb")
-    video_bytes = video_file.read()
-    st.video(video_bytes)
+    st.write("Demo video")
+    video_file = os.path.join(base_dir, "Demo chatbot.mp4")
+    st.video(video_file)
+
 
 # Try to read the file
 try:
