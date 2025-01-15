@@ -161,7 +161,7 @@ def send_chat_message(prompt):
     then return the final textual response. All outputs are shown in Streamlit.
     """
     prompt += """
-    You are a social listening insight, give me the insight which is from information that you learn from the function responses
+    You are a social media listening insight writer. Based on the information provided by the function's responses, generate actionable and well-articulated insights
     """
 
     # Ensure there's a chat session in st.session_state
