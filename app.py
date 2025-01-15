@@ -85,6 +85,10 @@ with st.sidebar:
 selected_default_file = (
     default_file_1 if default_file_option == "Central Retail and Competitors.xlsx" else default_file_2
 )
+# Demo video
+video_file = open("Demo chatbot.mp4", "rb")
+video_bytes = video_file.read()
+st.video(video_bytes)
 
 # Try to read the file
 try:
