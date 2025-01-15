@@ -629,7 +629,7 @@ def generate_brand_sentiment_details(
                 brand_obj["SentimentDetails"][sentiment_type] = []
                 continue
 
-            # Total number of mentions for this brand+sentiment
+            # Total number of mentions for this brand+sentiment############ thêm 1 for cho mỗi sentiment
             total_senti_mentions = len(senti_df)
 
             # Sample up to max_comments_per_sentiment comments
@@ -671,9 +671,9 @@ def generate_brand_sentiment_details(
 
             # Limit to max_posts if necessary (optional, based on original max_posts parameter)
             # If you still want to limit the number of posts per sentiment, you can uncomment the following lines:
-            # max_posts = 50  # Define max_posts or pass as a parameter
-            # if len(post_groups) > max_posts:
-            #     post_groups = random.sample(post_groups, max_posts)
+            max_posts = 30  # Define max_posts or pass as a parameter
+            if len(post_groups) > max_posts:
+                post_groups = random.sample(post_groups, max_posts)
 
             # Build final object for this sentiment
             senti_obj = {
