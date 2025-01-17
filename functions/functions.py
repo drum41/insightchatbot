@@ -11,6 +11,7 @@ def format_social_listening_data(df):
         'Comments': ['Comments', 'Comment', 'comments', 'comment'],
         'Views':    ['Views', 'View', 'views', 'view']
     }
+    df.columns = df.columns.str.strip()
     
     # Rename columns if they match any in interaction_columns
     interaction_found = False
