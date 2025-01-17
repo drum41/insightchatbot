@@ -19,6 +19,14 @@ def format_social_listening_data(df):
             if variation in df.columns:
                 df.rename(columns={variation: standard_col}, inplace=True)
                 interaction_found = True  # Mark that at least one interaction column exists
+    # Ensure all interaction columns are numeric
+    for standard_col in interaction_columns.keys():
+        if standard_col in df.columns:
+            # Trim whitespace
+            df[standard_col] = df[standard_col].astype(str).str.strip()
+    
+            # Convert to numeric, coercing invalid values to NaN
+            df[standard_col] = pd.to_numeric(df[standard_col], errors='coerce')
     
     # Create ChannelDeep column without removing or renaming 'Type'
     def generate_channel_deep(row):
