@@ -191,6 +191,13 @@ def generate_brand_health_overview(
         # 5) Engagement
         # We'll sum Reactions, Shares, Comments, Views => total_engagement
         # Then compute rates per 'NumberofPost' (the non-news "Topic" count).
+        # List of columns to process
+        columns_to_clean = ['reactions_col', 'shares_col', 'comments_col', 'views_col']
+        
+        # Convert each column to numeric, coercing errors to NaN
+        for col in columns_to_clean:
+            brand_df[col] = pd.to_numeric(brand_df[col], errors='coerce')
+            
         total_reactions = brand_df[reactions_col].sum(skipna=True)
         total_shares    = brand_df[shares_col].sum(skipna=True)
         total_comments  = brand_df[comments_col].sum(skipna=True)
